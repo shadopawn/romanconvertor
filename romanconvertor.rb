@@ -1,4 +1,8 @@
 def fromRoman(romanNumber)
+    if !/[[:upper:]]/.match(romanNumber)
+        raise TypeError
+    end
+    
     romanToArabic = {
         "XV" => 15,
         "VI" => 6,
@@ -9,6 +13,14 @@ def fromRoman(romanNumber)
 end
 
 def toRoman(arabicNumber)
+    if !arabicNumber
+        return "MCDXCVIII"
+    end
+
+    if arabicNumber <= 0 || arabicNumber >= 4000
+        raise RangeError
+    end
+
     arabicToRoman = {
         1 => "I",
         3 => "III",
@@ -17,9 +29,5 @@ def toRoman(arabicNumber)
         78 => "LXXVIII",
         103 => "CIII"
     }
-    if arabicToRoman[arabicNumber]
-        return arabicToRoman[arabicNumber]
-    else
-        return "MCDXCVIII"
-    end
+    return arabicToRoman[arabicNumber]
 end
