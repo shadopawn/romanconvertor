@@ -3,31 +3,59 @@ def fromRoman(romanNumber)
         raise TypeError
     end
     
-    romanToArabic = {
-        "XV" => 15,
-        "VI" => 6,
-        "LXXVIII" => 78,
-        "CIII" => 103
+    roman_mapping = {
+        1000 => "M",  
+        900 => "CM",  
+        500 => "D",  
+        400 => "CD",
+        100 => "C",  
+        90 => "XC",  
+        50 => "L",  
+        40 => "XL",  
+        10 => "X",  
+        9 => "IX",  
+        5 => "V",  
+        4 => "IV",  
+        1 => "I",  
     }
-    return romanToArabic[romanNumber]
+
+    result = 0
+    roman_mapping.values.each do |roman|
+        while romanNumber.start_with?(roman)
+            result += roman_mapping.invert[roman]
+            romanNumber = romanNumber.slice(roman.length, romanNumber.length)
+        end
+    end
+    return result
 end
 
 def toRoman(arabicNumber)
-    if !arabicNumber
-        return "MCDXCVIII"
-    end
 
     if arabicNumber <= 0 || arabicNumber >= 4000
         raise RangeError
     end
-
-    arabicToRoman = {
-        1 => "I",
-        3 => "III",
-        15 => "XV",
-        6 => "VI",
-        78 => "LXXVIII",
-        103 => "CIII"
+       
+    roman_mapping = {
+        1000 => "M",
+        900 => "CM",
+        500 => "D",
+        400 => "CD",
+        100 => "C",
+        90 => "XC",
+        50 => "L",
+        40 => "XL",
+        10 => "X",
+        9 => "IX",
+        5 => "V",
+        4 => "IV",
+        1 => "I"
     }
-    return arabicToRoman[arabicNumber]
+
+    result = ""
+    roman_mapping.keys.each do |divisor|
+      quotient, modulus = arabicNumber.divmod(divisor)
+      result << roman_mapping[divisor] * quotient
+      arabicNumber = modulus
+    end
+    return result
 end
